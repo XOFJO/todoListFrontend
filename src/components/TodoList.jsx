@@ -1,64 +1,106 @@
-import { TodoItem } from './todoItem';
-import {useTodoStore} from '../stores/todoStore.js';
+import { TodoItem } from "./todoItem";
+import { useTodoStore } from "../stores/todoStore.js";
 
-
-    
 export default function TodoList() {
-
-  const { todoData, onUpdateTodoData, isFilter, toggleFilter, currentInput, onUpdateCurrentInput } = useTodoStore();
-  const filteredItems = isFilter ? todoData.filter(item => !item.completed) : todoData;
+  const {
+    todoData,
+    onUpdateTodoData,
+    isFilter,
+    toggleFilter,
+    currentInput,
+    onUpdateCurrentInput,
+  } = useTodoStore();
+  const filteredItems = isFilter
+    ? todoData.filter((item) => !item.completed)
+    : todoData;
 
   const handleItemToggle = (todoId) => {
-    onUpdateTodoData(todoData.map(todo => {
-      if (todo.id === todoId) {
-        return { ...todo, completed: !todo.completed};
-      }
-      return todo;
-    }))};
+    onUpdateTodoData(
+      todoData.map((todo) => {
+        if (todo.id === todoId) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      })
+    );
+  };
 
   const handleAddTodo = () => {
     if (currentInput.trim() === "") {
       return;
     } else {
-      onUpdateTodoData([...todoData, { id: Date.now(), title: currentInput, completed: false }]);
-      
+      onUpdateTodoData([
+        ...todoData,
+        { id: Date.now(), title: currentInput, completed: false },
+      ]);
     }
-  }
-
+  };
 
   const handlelClearFinished = () => {
-    onUpdateTodoData(todoData.filter(item => !item.completed));
-  }
-
+    onUpdateTodoData(todoData.filter((item) => !item.completed));
+  };
 
   return (
     <section>
       <h1>Sally Ride 的 Todo 清单</h1>
-      <label>
-        <input type="checkbox" onChange={() => {toggleFilter(!isFilter)}}/>
-        过滤已完成的事项
 
+      <div>
+        <label>总数: {todoData.length}</label>
+
+        <label>
+          未完成：{" "}
+          {todoData.reduce((prev, item) => {
+            return item.completed ? prev : prev + 1;
+          }, 0)}
+        </label>
+
+        <label>
+          已完成：{" "}
+          {todoData.reduce((prev, item) => {
+            return !item.completed ? prev : prev + 1;
+          }, 0)}
+        </label>
+      </div>
+
+      <label>
+        <input
+          type="checkbox"
+          onChange={() => {
+            toggleFilter(!isFilter);
+          }}
+        />
+        过滤已完成的事项
       </label>
 
       <div>
-
-        <input type="text" value={currentInput} onChange={(e) => {
-          onUpdateCurrentInput(e.target.value)
-        }}/>
+        <input
+          type="text"
+          value={currentInput}
+          onChange={(e) => {
+            onUpdateCurrentInput(e.target.value);
+          }}
+        />
         <button onClick={handleAddTodo}>添加</button>
-
       </div>
 
       <ul>
         {filteredItems.map((item, index) => (
-          <TodoItem key={index} title={item.title} completed={item.completed} onToggle={() => handleItemToggle(item.id)}/>
+          <TodoItem
+            key={index}
+            title={item.title}
+            completed={item.completed}
+            onToggle={() => handleItemToggle(item.id)}
+          />
         ))}
       </ul>
 
       <div>
-        <button onClick={handlelClearFinished}>清空已完成{todoData.reduce((prev, item) => {
-          return item.completed ? prev + 1 : prev
-        }, 0)}</button>
+        <button onClick={handlelClearFinished}>
+          清空已完成
+          {todoData.reduce((prev, item) => {
+            return item.completed ? prev + 1 : prev;
+          }, 0)}
+        </button>
       </div>
     </section>
   );
