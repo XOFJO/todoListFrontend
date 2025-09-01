@@ -55,11 +55,10 @@ export default function TodoList() {
         ))}
       </ul>
 
-
-
-
       <div>
-        <button onClick={handlelClearFinished}>清空已完成</button>
+        <button onClick={handlelClearFinished}>清空已完成{todoData.reduce((prev, item) => {
+          return item.completed ? prev + 1 : prev
+        }, 0)}</button>
       </div>
     </section>
   );
