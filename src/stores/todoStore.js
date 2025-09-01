@@ -1,15 +1,16 @@
 import { create } from "zustand";
 
-import todoItems from '../components/todoItems.json';
-
+import todoItems from "../components/todoItems.json";
 
 export const useTodoStore = create((set, get) => ({
   todoData: todoItems,
   isFilter: false,
+  currentInput: "",
 
   toggleFilter: () => set((state) => ({ isFilter: !state.isFilter })),
 
-  onUpdateTodoData: (newData) =>
-    set((state) => ({ todoData: newData })),
+  onUpdateTodoData: (newData) => set((state) => ({ todoData: newData })),
 
+  onUpdateCurrentInput: (newInput) =>
+    set((state) => ({ currentInput: newInput })),
 }));
