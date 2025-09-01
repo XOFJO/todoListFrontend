@@ -12,5 +12,5 @@ export const useTodoStore = create((set, get) => ({
   onUpdateTodoData: (newData) => set((state) => ({ todoData: newData })),
 
   onUpdateCurrentInput: (newInput) =>
-    set((state) => ({ currentInput: newInput })),
+    set(() => ({ currentInput: newInput })),
 }));

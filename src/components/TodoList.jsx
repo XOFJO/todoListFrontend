@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import todoItems from './todoItems.json';
 import { TodoItem } from './todoItem';
 import {useTodoStore} from '../stores/todoStore.js';
 
@@ -22,9 +20,14 @@ export default function TodoList() {
     if (currentInput.trim() === "") {
       return;
     } else {
-      onUpdateTodoData([...todoData, { id: todoData.length + 1, title: currentInput, completed: false }]);
+      onUpdateTodoData([...todoData, { id: Date.now(), title: currentInput, completed: false }]);
       
     }
+  }
+
+
+  const handlelClearFinished = () => {
+    onUpdateTodoData(todoData.filter(item => !item.completed));
   }
 
 
@@ -51,6 +54,13 @@ export default function TodoList() {
           <TodoItem key={index} title={item.title} completed={item.completed} onToggle={() => handleItemToggle(item.id)}/>
         ))}
       </ul>
+
+
+
+
+      <div>
+        <button onClick={handlelClearFinished}>清空已完成</button>
+      </div>
     </section>
   );
 }
