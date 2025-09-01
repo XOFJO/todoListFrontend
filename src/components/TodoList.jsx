@@ -1,5 +1,6 @@
 import { TodoItem } from "./todoItem";
 import { useTodoStore } from "../stores/todoStore.js";
+import styles from "./todoList.module.css";
 
 export default function TodoList() {
   const {
@@ -36,25 +37,25 @@ export default function TodoList() {
     }
   };
 
-  const handlelClearFinished = () => {
+  const handleClearFinished = () => {
     onUpdateTodoData(todoData.filter((item) => !item.completed));
   };
 
   return (
-    <section>
-      <h1>Sally Ride 的 Todo 清单</h1>
+    <section className={styles.container}>
+      <h1 className={styles.title}>Sally Ride 的 Todo 清单</h1>
 
-      <div>
-        <label>总数: {todoData.length}</label>
+      <div className={styles.statsContainer}>
+        <label className={styles.statsLabel}>总数: {todoData.length}</label>
 
-        <label>
+        <label className={styles.statsIncomplete}>
           未完成：{" "}
           {todoData.reduce((prev, item) => {
             return item.completed ? prev : prev + 1;
           }, 0)}
         </label>
 
-        <label>
+        <label className={styles.statsCompleted}>
           已完成：{" "}
           {todoData.reduce((prev, item) => {
             return !item.completed ? prev : prev + 1;
@@ -62,28 +63,36 @@ export default function TodoList() {
         </label>
       </div>
 
-      <label>
+      <label className={styles.filterLabel}>
         <input
           type="checkbox"
           onChange={() => {
             toggleFilter(!isFilter);
           }}
+          className={styles.filterCheckbox}
         />
         过滤已完成的事项
       </label>
 
-      <div>
+      <div className={styles.inputContainer}>
         <input
           type="text"
           value={currentInput}
           onChange={(e) => {
             onUpdateCurrentInput(e.target.value);
           }}
+          className={styles.textInput}
+          placeholder="输入新任务..."
         />
-        <button onClick={handleAddTodo}>添加</button>
+        <button 
+          onClick={handleAddTodo}
+          className={styles.addButton}
+        >
+          添加
+        </button>
       </div>
 
-      <ul>
+      <ul className={styles.todoList}>
         {filteredItems.map((item, index) => (
           <TodoItem
             key={index}
@@ -94,8 +103,11 @@ export default function TodoList() {
         ))}
       </ul>
 
-      <div>
-        <button onClick={handlelClearFinished}>
+      <div className={styles.clearButtonContainer}>
+        <button 
+          onClick={handleClearFinished}
+          className={styles.clearButton}
+        >
           清空已完成
           {todoData.reduce((prev, item) => {
             return item.completed ? prev + 1 : prev;

@@ -13,3 +13,111 @@
   text-decoration: line-through;
   opacity: 0.7;
 }
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.statsContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.statsLabel {
+  font-weight: bold;
+}
+
+.statsIncomplete {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.statsCompleted {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.filterLabel {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.filterCheckbox {
+  margin-right: 8px;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.textInput {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.textInput:focus {
+  border-color: #3498db;
+}
+
+.addButton {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.addButton:hover {
+  background-color: #2980b9;
+}
+
+.todoList {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.clearButtonContainer {
+  text-align: center;
+}
+
+.clearButton {
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clearButton:hover {
+  background-color: #c0392b;
+}
