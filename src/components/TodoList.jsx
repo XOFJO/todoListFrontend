@@ -1,21 +1,28 @@
 import { useState } from 'react';
 import todoItems from './todoItems.json';
-import styles from './TodoList.module.css';
+import { TodoItem } from './todoItem';
+import {useTodoStore} from '../stores/todoStore.js';
 
-function TodoItem({ title, completed, onToggle }) {
-  const itemClassName = `${styles.item} ${completed ? styles.checked : ''}`;
-  return (
-    <li className={itemClassName}>
-      <label>
-        <input type="checkbox" checked={completed} onChange={onToggle}/>
-        {title} {completed && "✅"}
-      </label>
-    </li>
-  );
-}
+
     
 export default function TodoList() {
+
+  // const { todoData, onUpdateTodoData, isFilter,  } = useRegisterStore();
+
+
+
+
   const [todos, setTodos] = useState(todoItems);
+
+
+
+
+
+
+
+
+
+
   const [isFilter, setIsFilter] = useState(false);
   const filteredItems = isFilter ? todos.filter(item => !item.completed) : todos;
 
