@@ -1,7 +1,8 @@
 import { TodoItem } from "./todoItem";
 import { useTodoStore } from "../stores/todoStore.js";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router";
 import styles from "./todoList.module.css";
+import { useEffect } from "react";
 
 export default function TodoList() {
   const {
@@ -11,7 +12,31 @@ export default function TodoList() {
     toggleFilter,
     currentInput,
     onUpdateCurrentInput,
+    currentPage,
+    totalPages,
+    fetchTodoData,
   } = useTodoStore();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = parseInt(searchParams.get("page")) || 1;
+  const size = parseInt(searchParams.get("size")) || 5;
+
+  useEffect(() => {
+    fetchTodoData(page, size);
+  }, [page, size, fetchTodoData]);
+
+  const updateSearchParams = (newPage, newSize = size) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage);
+    params.set("size", newSize);
+    setSearchParams(params);
+  };
+
+  const handleGoToPage = (targetPage) => {
+    updateSearchParams(targetPage);
+  };
+
   const filteredItems = isFilter
     ? todoData.filter((item) => !item.completed)
     : todoData;
@@ -85,10 +110,7 @@ export default function TodoList() {
           className={styles.textInput}
           placeholder="输入新任务..."
         />
-        <button 
-          onClick={handleAddTodo}
-          className={styles.addButton}
-        >
+        <button onClick={handleAddTodo} className={styles.addButton}>
           添加
         </button>
       </div>
@@ -105,15 +127,26 @@ export default function TodoList() {
       </ul>
 
       <div className={styles.clearButtonContainer}>
-        <button 
-          onClick={handleClearFinished}
-          className={styles.clearButton}
-        >
+        <button onClick={handleClearFinished} className={styles.clearButton}>
           清空已完成
           {todoData.reduce((prev, item) => {
             return item.completed ? prev + 1 : prev;
           }, 0)}
         </button>
+      </div>
+
+      <div className={styles.paginationContainer}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleGoToPage(index + 1)}
+            className={`${styles.paginationButton} ${
+              currentPage === index + 1 ? styles.activePage : ""
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </section>
   );
