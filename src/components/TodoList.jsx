@@ -26,7 +26,7 @@ export default function TodoList() {
 
   useEffect(() => {
     fetchTodoData(page, size);
-  }, [page, size]);
+  }, [page, size, fetchTodoData]);
 
   const updateSearchParams = (newPage, newSize = size) => {
     const params = new URLSearchParams(searchParams);

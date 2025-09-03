@@ -39,7 +39,7 @@ export const useTodoStore = create((set, get) => ({
 
   toggleFilter: () => set((state) => ({ isFilter: !state.isFilter })),
 
-  onUpdateTodoData: (newData) => set((state) => ({ todoData: newData })),
+  onUpdateTodoData: (newData) => set(() => ({ todoData: newData })),
 
   onUpdateCurrentInput: (newInput) => set(() => ({ currentInput: newInput })),
 
