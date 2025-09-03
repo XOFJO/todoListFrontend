@@ -7,7 +7,6 @@ import { useEffect } from "react";
 export default function TodoList() {
   const {
     todoData,
-    onUpdateTodoData,
     isFilter,
     toggleFilter,
     currentInput,
@@ -15,6 +14,9 @@ export default function TodoList() {
     currentPage,
     totalPages,
     fetchTodoData,
+    deleteCompletedTodos,
+    addTodo,
+    toggleTodo,
   } = useTodoStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +26,7 @@ export default function TodoList() {
 
   useEffect(() => {
     fetchTodoData(page, size);
-  }, [page, size, fetchTodoData]);
+  }, [page, size]);
 
   const updateSearchParams = (newPage, newSize = size) => {
     const params = new URLSearchParams(searchParams);
@@ -41,30 +43,20 @@ export default function TodoList() {
     ? todoData.filter((item) => !item.completed)
     : todoData;
 
-  const handleItemToggle = (todoId) => {
-    onUpdateTodoData(
-      todoData.map((todo) => {
-        if (todo.id === todoId) {
-          return { ...todo, completed: !todo.completed };
-        }
-        return todo;
-      })
-    );
+  const handleItemToggle = async (todoId) => {
+    await toggleTodo(todoId);
   };
 
-  const handleAddTodo = () => {
+  const handleAddTodo = async () => {
     if (currentInput.trim() === "") {
       return;
     } else {
-      onUpdateTodoData([
-        ...todoData,
-        { id: Date.now(), title: currentInput, completed: false },
-      ]);
+      await addTodo(currentInput);
     }
   };
 
-  const handleClearFinished = () => {
-    onUpdateTodoData(todoData.filter((item) => !item.completed));
+  const handleClearFinished = async () => {
+    await deleteCompletedTodos();
   };
 
   return (

@@ -42,4 +42,72 @@ export const useTodoStore = create((set, get) => ({
   onUpdateTodoData: (newData) => set((state) => ({ todoData: newData })),
 
   onUpdateCurrentInput: (newInput) => set(() => ({ currentInput: newInput })),
+
+  deleteCompletedTodos: async () => {
+    try {
+      const { todoData } = get();
+      const completedTodos = todoData.filter(todo => todo.completed);
+      
+      for (const todo of completedTodos) {
+        await axios.delete(`http://localhost:8080/api/todos/${todo.id}`);
+      }
+      
+      set((state) => ({
+        todoData: state.todoData.filter(todo => !todo.completed)
+      }));
+      
+      console.log("Deleted completed todos successfully");
+    } catch (error) {
+      console.error("Error deleting completed todos:", error);
+    }
+  },
+
+  addTodo: async (title) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/todos', {
+        title: title,
+        completed: false
+      });
+      
+      const newTodo = response.data;
+      
+      set((state) => ({
+        todoData: [...state.todoData, newTodo],
+        currentInput: ""
+      }));
+      
+      console.log("Added new todo successfully:", newTodo);
+    } catch (error) {
+      console.error("Error adding new todo:", error);
+    }
+  },
+
+  toggleTodo: async (todoId) => {
+    try {
+      const { todoData } = get();
+      const todoToUpdate = todoData.find(todo => todo.id === todoId);
+      
+      if (!todoToUpdate) {
+        console.error("Todo not found with id:", todoId);
+        return;
+      }
+      
+      const response = await axios.put(`http://localhost:8080/api/todos/${todoId}`, {
+        ...todoToUpdate,
+        completed: !todoToUpdate.completed
+      });
+      
+      const updatedTodo = response.data;
+      
+      set((state) => ({
+        todoData: state.todoData.map(todo =>
+          todo.id === todoId ? updatedTodo : todo
+        )
+      }));
+      
+      console.log("Toggled todo successfully:", updatedTodo);
+    } catch (error) {
+      console.error("Error toggling todo:", error);
+    }
+  },
 }));
